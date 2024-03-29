@@ -1,0 +1,13 @@
+service: 'service:svc'
+include:
+  - '*.py'
+  - weights
+  - '*.yaml'
+python:
+  # Specify each package with its version
+  # packages:
+    # - bentoml[grpc]==1.1.7
+    # - alibi-detect[tensorflow]==0.11.4
+  # or using requirements.txt
+  # please read more about it here https://docs.bentoml.org/en/latest/concepts/bento.html
+  requirements_txt: "requirements.txt"

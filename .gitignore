@@ -1,0 +1,3 @@
+deployments/triton/model_repo/fastpitch/1/model.onnx
+tts/models_storage/FastPitch_checkpoint_1000.pt
+onnx_models/fast_pitch.onnx

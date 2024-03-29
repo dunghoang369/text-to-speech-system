@@ -1,0 +1,30 @@
+# You can see another example here
+# https://docs.seldon.io/projects/seldon-core/en/latest/examples/payload_logging.html
+apiVersion: machinelearning.seldon.io/v1
+kind: SeldonDeployment
+metadata:
+  name: seldon-model-autoscale
+  namespace: seldon
+spec:
+  name: test-deployment
+  predictors:
+  - componentSpecs:
+    - hpaSpec:
+        maxReplicas: 2
+        metrics:
+        - resource:
+            name: cpu
+            targetAverageUtilization: 30
+          type: Resource
+        minReplicas: 1
+      spec:
+        containers:
+        - image: dunghoang99/tts:v1.0.3
+          name: detector
+    graph:
+      children: []
+      endpoint:
+        type: REST
+      name: detector
+      type: MODEL
+    name: intrusion

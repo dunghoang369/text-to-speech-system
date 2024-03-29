@@ -1,0 +1,37 @@
+version: '3.9'
+x-triton-common: &triton-common
+  deploy:
+    resources:
+      reservations:
+        devices:
+        - driver: nvidia
+          device_ids: ['0'] # If it is not set, use all devices
+          capabilities: [gpu]
+services:
+  yolov8:
+    <<: *triton-common
+    image: nvcr.io/nvidia/tritonserver:23.09-py3 # Release yy.mm is 22.08
+    container_name: tts
+    ports:
+      - 8003:8000
+      - 8004:8001
+      - 8005:8002
+    shm_size: 512M # Increase the shared memory size to 512MB
+    command: tritonserver --model-repository=/models
+    volumes:
+      - ./model_repo:/models
+  # You can also use the PyPI package `triton-model-analyzer`
+  # instead of using a container like this
+  triton-sdk:
+    <<: *triton-common
+    image: nvcr.io/nvidia/tritonserver:23.09-py3-sdk # Release yy.mm is 22.08
+    container_name: triton-sdk
+    stdin_open: true # Equal to `docker run -i`
+    tty: true        # Equal to `docker run -t`
+    network_mode: host
+    privileged: true
+    volumes:
+      - /home/dunghc/tts/DeepLearningExamples/PyTorch/SpeechSynthesis/FastPitch/model_repo:/home/dunghc/tts/DeepLearningExamples/PyTorch/SpeechSynthesis/FastPitch/model_repo
+      - /home/dunghc/tts/DeepLearningExamples/PyTorch/SpeechSynthesis/FastPitch/output_model_repo:/home/dunghc/tts/DeepLearningExamples/PyTorch/SpeechSynthesis/FastPitch/output_model_repo
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./profile_results:/profile_results

@@ -1,0 +1,26 @@
+# You can see another example here
+# https://docs.seldon.io/projects/seldon-core/en/latest/examples/payload_logging.html
+apiVersion: machinelearning.seldon.io/v1
+kind: SeldonDeployment
+metadata:
+  name: seldon-model-logging
+  namespace: seldon
+spec:
+  name: test-deployment
+  predictors:
+  - componentSpecs:
+    - spec:
+        containers:
+        - image: dunghoang99/tts:v1.0.3
+          name: detector
+    graph:
+      children: []
+      endpoint:
+        type: REST
+      name: detector
+      type: MODEL
+      logger:
+        url: http://mylogging-endpoint-svc.seldon.svc.cluster.local:8000
+        mode: all
+    name: intrusion
+    replicas: 1

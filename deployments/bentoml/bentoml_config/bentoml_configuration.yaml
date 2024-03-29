@@ -1,0 +1,27 @@
+# Ref: https://docs.bentoml.org/en/latest/guides/configuration.html
+api_server:
+  http:
+    port: 5000
+  logging:
+    access:
+      # whether to disable logs for requests made to the API server
+      enabled: false
+      # whether to log the size of the request body
+      request_content_length: true
+      # whether to log the content type of the request
+      request_content_type: true
+      # whether to log the content length of the response
+      response_content_length: true
+      # whether to log the content type of the response
+      response_content_type: true
+runners:
+  logging:
+    access:
+      # whether to disable logs for requests made to the API server
+      enabled: false
+      # ... similar to the above
+monitoring:
+  enabled: True
+  type: default # It can be ArizeMonitor, etc., https://github.com/bentoml/BentoML/tree/main/examples/monitoring/task_classification#customizing-the-monitoring
+  options:
+    log_path: monitoring/intrusion_detection.log

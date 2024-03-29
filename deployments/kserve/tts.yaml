@@ -1,0 +1,19 @@
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: tts
+  namespace: kserve-deployment
+spec:
+  predictor:
+    # Hard-limit for the number of concurrent requests to be 
+    # processed by each replica
+    containerConcurrency: 10
+    # This annotations will help to scale down to 0
+    # if you want to scale down on GPU, check this out https://kserve.github.io/website/0.8/modelserving/autoscaling/autoscaling/#create-the-inferenceservice-with-gpu-resource
+    minReplicas: 0 
+    containers:
+      - name: classifier
+        image: dunghoang99/tts:v1.0.3
+        ports:
+          - containerPort: 9000
+            protocol: TCP

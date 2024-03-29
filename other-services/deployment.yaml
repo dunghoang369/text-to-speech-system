@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mylogging-endpoint
+  namespace: seldon # In production, please use a specific namespace for monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mylogging-endpoint
+  template:
+    metadata:
+      labels:
+        app: mylogging-endpoint # Labels for all the pods the deployment is managing
+    spec:
+      containers:
+        - name: mylogging-endpoint
+          image: fullstackdatascience/mylogging-endpoint:0.7
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mylogging-endpoint-svc
+  labels:
+    app: mylogging-endpoint
+  namespace: seldon
+spec:
+  selector:
+    app: mylogging-endpoint
+  ports:
+    - port: 8000
+      protocol: TCP
+      targetPort: 8000
+  type: ClusterIP
